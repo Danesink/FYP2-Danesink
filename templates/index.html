@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure Cloud Storage</title>
+</head>
+<body>
+    <h2>Upload and Encrypt File</h2>
+
+     <!-- Flash messages section -->
+     {% with messages = get_flashed_messages() %}
+     {% if messages %}
+       <ul style="color: green;">
+         {% for message in messages %}
+           <li>{{ message }}</li>
+         {% endfor %}
+       </ul>
+     {% endif %}
+   {% endwith %}
+
+   {% if key %}
+<div id="key-box" style="color: red; border: 1px solid #ccc; padding: 10px;">
+    <strong>Your AES key (save this now, it won't be shown again):</strong><br>
+    <span id="aes-key">{{ key }}</span><br><br>
+    <button onclick="hideKey()">Done / Hide</button>
+</div>
+
+<script>
+    function hideKey() {
+        document.getElementById('key-box').style.display = 'none';
+    }
+</script>
+{% endif %}
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <br><br>
+        <button type="submit">Upload and Encrypt</button>
+    </form>
+
+    <hr>
+<h2>Decrypt a File</h2>
+<form action="/decrypt" method="POST" enctype="multipart/form-data">
+    <input type="file" name="enc_file" required><br><br>
+    <input type="text" name="key" placeholder="Enter AES Key (hex)" required><br><br>
+    <button type="submit">Decrypt</button>
+</form>
+
+</body>
+</html>
+
